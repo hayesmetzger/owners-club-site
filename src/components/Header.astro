@@ -1,0 +1,98 @@
+---
+const navLinks = [
+  { label: 'Home', href: '/' },
+  { label: 'Blog', href: '/blog' },
+  { label: 'About', href: '/about' },
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="/" class="logo-link">
+      <img src="/keystone.svg" alt="Owners Club keystone mark" class="logo-mark" width="32" height="36" />
+      <span class="wordmark">Owners Club</span>
+    </a>
+    <nav>
+      <ul class="nav-links">
+        {navLinks.map((link) => (
+          <li><a href={link.href}>{link.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a href="/join" class="btn btn-primary header-cta">Join the club</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: var(--oc-warm-white);
+    border-bottom: 1px solid var(--oc-cream);
+    padding: 0.75rem 0;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--oc-black);
+  }
+
+  .logo-mark {
+    height: 32px;
+    width: auto;
+  }
+
+  .wordmark {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: 0.05em;
+    color: var(--oc-black);
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+  }
+
+  nav a {
+    color: var(--oc-slate);
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  nav a:hover {
+    color: var(--oc-black);
+  }
+
+  .header-cta {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .header-inner {
+      flex-wrap: wrap;
+    }
+    nav ul {
+      gap: 1rem;
+    }
+    .header-cta {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout title="Blog — Owners Club" description="Insights, guides, and practical advice on buying and selling small businesses.">
+  <section class="blog-hero">
+    <div class="container">
+      <h1>Blog</h1>
+      <p class="blog-lead">Practical insights for business owners — buying, selling, and everything in between.</p>
+    </div>
+  </section>
+
+  <section class="blog-list">
+    <div class="container">
+      {posts.length === 0 && <p>Coming soon — check back shortly.</p>}
+      <ul class="post-list">
+        {posts.map((post) => (
+          <li class="post-card">
+            <a href={`/blog/${post.id}`}>
+              <time datetime={post.data.pubDate.toISOString()}>
+                {post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </time>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+              <span class="read-more">Read more &rarr;</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    background: var(--oc-navy);
+    color: #fff;
+    padding: 4rem 0;
+    text-align: center;
+  }
+
+  .blog-hero h1 {
+    color: #fff;
+    margin-bottom: 0.75rem;
+  }
+
+  .blog-lead {
+    color: var(--oc-steel);
+    font-size: 1.1rem;
+  }
+
+  .post-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .post-card {
+    border-bottom: 1px solid var(--oc-cream);
+    padding-bottom: 1.5rem;
+  }
+
+  .post-card a {
+    text-decoration: none;
+    display: block;
+  }
+
+  .post-card time {
+    font-size: 0.85rem;
+    color: var(--oc-mid-gray);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .post-card h2 {
+    font-size: 1.5rem;
+    color: var(--oc-black);
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+  }
+
+  .post-card a:hover h2 {
+    color: var(--oc-gold);
+  }
+
+  .post-card p {
+    font-size: 1rem;
+    color: var(--oc-slate);
+    line-height: 1.6;
+  }
+
+  .read-more {
+    font-size: 0.9rem;
+    color: var(--oc-gold);
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 0.5rem;
+  }
+</style>

@@ -1,0 +1,143 @@
+/* ============================================
+   Owners Club — Global Styles
+   Brand tokens from Brand Guidelines v1.0
+   ============================================ */
+
+:root {
+  /* Primary palette */
+  --oc-black: #1A1A1A;
+  --oc-gold: #C9A96E;
+  --oc-slate: #475569;
+  --oc-cream: #F5F0E6;
+  --oc-warm-white: #FAFAF8;
+
+  /* Extended palette */
+  --oc-navy: #0F172A;
+  --oc-charcoal: #2D2D2D;
+  --oc-steel: #94A3B8;
+  --oc-mid-gray: #64748B;
+  --oc-forest: #0F4C3A;
+
+  /* Typography */
+  --font-headline: Georgia, 'Times New Roman', serif;
+  --font-body: Calibri, 'Gill Sans', 'Segoe UI', sans-serif;
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 6rem;
+}
+
+/* Reset & base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--oc-black);
+  background-color: var(--oc-warm-white);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--oc-black);
+}
+
+h1 { font-size: 2.75rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+
+p {
+  margin-bottom: 1rem;
+  color: var(--oc-slate);
+}
+
+a {
+  color: var(--oc-gold);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--oc-black);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Container utility */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 var(--space-sm);
+}
+
+/* Button styles */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.75rem;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background-color: var(--oc-black);
+  color: var(--oc-warm-white);
+}
+
+.btn-primary:hover {
+  background-color: var(--oc-charcoal);
+  color: var(--oc-warm-white);
+}
+
+.btn-gold {
+  background-color: var(--oc-gold);
+  color: var(--oc-black);
+}
+
+.btn-gold:hover {
+  background-color: #b8953d;
+  color: var(--oc-black);
+}
+
+.btn-outline {
+  background: transparent;
+  border: 2px solid var(--oc-black);
+  color: var(--oc-black);
+}
+
+.btn-outline:hover {
+  background-color: var(--oc-black);
+  color: var(--oc-warm-white);
+}
+
+/* Section spacing */
+section {
+  padding: var(--space-xl) 0;
+}

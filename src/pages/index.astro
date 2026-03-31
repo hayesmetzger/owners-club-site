@@ -1,0 +1,267 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Owners Club — Buy and sell small businesses, smarter">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1>The smartest way to buy or sell a business</h1>
+      <p class="hero-sub">
+        Owners Club is an AI-powered platform where small business owners make deals happen —
+        with the data, tools, and confidence to do it on your terms.
+      </p>
+      <div class="hero-actions">
+        <a href="/join" class="btn btn-gold">Join the mailing list</a>
+        <a href="/blog" class="btn btn-outline hero-outline">Read the blog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2>How it works</h2>
+      <p class="section-lead">AI handles the complexity. You make the decisions.</p>
+      <div class="steps-grid">
+        <div class="step">
+          <span class="step-num">01</span>
+          <h3>Know your number</h3>
+          <p>Get an AI-powered valuation grounded in real market data — not guesswork, not a sales pitch.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">02</span>
+          <h3>Find the right match</h3>
+          <p>We surface buyers and sellers who fit what you're looking for, with the data you need to decide.</p>
+        </div>
+        <div class="step">
+          <span class="step-num">03</span>
+          <h3>Close with confidence</h3>
+          <p>From due diligence to closing — our tools keep the process moving so nothing falls through the cracks.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Value props -->
+  <section class="value-props">
+    <div class="container">
+      <div class="value-grid">
+        <div class="value-card">
+          <h3>Built for owners, not brokers</h3>
+          <p>You know your business better than anyone. We give you the tools to sell it yourself — intelligently, on your timeline.</p>
+        </div>
+        <div class="value-card">
+          <h3>AI that does the heavy lifting</h3>
+          <p>Valuations, matching, document analysis — our technology handles the tedious parts so you can focus on what matters.</p>
+        </div>
+        <div class="value-card">
+          <h3>A private club, not a listing site</h3>
+          <p>Owners Club is a community of serious buyers and sellers. No tire-kickers, no noise — just people ready to do business.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Mailing list CTA -->
+  <section class="cta-section">
+    <div class="container cta-inner">
+      <h2>We're building something new</h2>
+      <p>Owners Club is launching soon. Join the mailing list to get early access, insights on buying and selling businesses, and a front-row seat as we build.</p>
+      <form class="signup-form" action="#" method="POST">
+        <input
+          type="email"
+          name="email"
+          placeholder="Your email address"
+          required
+          aria-label="Email address"
+        />
+        <button type="submit" class="btn btn-gold">Get early access</button>
+      </form>
+      <p class="form-note">No spam, ever. Just useful stuff for business owners.</p>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* Hero */
+  .hero {
+    background-color: var(--oc-navy);
+    color: #fff;
+    padding: 6rem 0;
+    text-align: center;
+  }
+
+  .hero h1 {
+    color: #fff;
+    font-size: 3.25rem;
+    max-width: 720px;
+    margin: 0 auto 1.5rem;
+    line-height: 1.1;
+  }
+
+  .hero-sub {
+    color: var(--oc-steel);
+    font-size: 1.2rem;
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .hero-outline {
+    border-color: var(--oc-steel);
+    color: var(--oc-steel);
+  }
+
+  .hero-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-color: #fff;
+  }
+
+  /* How it works */
+  .how-it-works {
+    text-align: center;
+  }
+
+  .section-lead {
+    font-size: 1.15rem;
+    color: var(--oc-slate);
+    margin-top: 0.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2.5rem;
+    text-align: left;
+  }
+
+  .step {
+    padding: 2rem;
+    background: var(--oc-cream);
+    border-radius: 12px;
+  }
+
+  .step-num {
+    font-family: var(--font-headline);
+    font-size: 0.85rem;
+    color: var(--oc-gold);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .step h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .step p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* Value props */
+  .value-props {
+    background: var(--oc-warm-white);
+  }
+
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .value-card {
+    padding: 2rem;
+    border: 1px solid var(--oc-cream);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .value-card h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.2rem;
+  }
+
+  .value-card p {
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  /* CTA section */
+  .cta-section {
+    background: var(--oc-navy);
+    color: #fff;
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 600px;
+  }
+
+  .cta-section h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .cta-section > .container > p {
+    color: var(--oc-steel);
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+
+  .signup-form {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .signup-form input {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--oc-steel);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    min-width: 280px;
+    font-family: var(--font-body);
+  }
+
+  .signup-form input::placeholder {
+    color: var(--oc-mid-gray);
+  }
+
+  .signup-form input:focus {
+    outline: 2px solid var(--oc-gold);
+    border-color: var(--oc-gold);
+  }
+
+  .form-note {
+    font-size: 0.8rem;
+    color: var(--oc-mid-gray);
+    margin-top: 0.75rem;
+  }
+
+  @media (max-width: 640px) {
+    .hero h1 {
+      font-size: 2.25rem;
+    }
+    .signup-form input {
+      min-width: 100%;
+    }
+  }
+</style>

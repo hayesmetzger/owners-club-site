@@ -1,0 +1,92 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Join the mailing list — Owners Club" description="Get early access to Owners Club. No spam — just insights on buying and selling businesses.">
+  <section class="join-hero">
+    <div class="container join-inner">
+      <h1>Join the club</h1>
+      <p class="join-lead">
+        We're launching soon. Sign up for early access, practical insights on buying and
+        selling businesses, and updates as we build.
+      </p>
+      <form class="join-form" action="#" method="POST">
+        <div class="form-row">
+          <input type="text" name="name" placeholder="Your name" required aria-label="Name" />
+          <input type="email" name="email" placeholder="Your email" required aria-label="Email" />
+        </div>
+        <button type="submit" class="btn btn-gold">Get early access</button>
+      </form>
+      <p class="form-note">No spam, ever. Unsubscribe anytime.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .join-hero {
+    background: var(--oc-navy);
+    color: #fff;
+    padding: 6rem 0;
+    text-align: center;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .join-inner {
+    max-width: 520px;
+  }
+
+  .join-hero h1 {
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .join-lead {
+    color: var(--oc-steel);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+  }
+
+  .join-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .form-row input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border: 1px solid var(--oc-steel);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-family: var(--font-body);
+  }
+
+  .form-row input::placeholder {
+    color: var(--oc-mid-gray);
+  }
+
+  .form-row input:focus {
+    outline: 2px solid var(--oc-gold);
+    border-color: var(--oc-gold);
+  }
+
+  .form-note {
+    font-size: 0.8rem;
+    color: var(--oc-mid-gray);
+    margin-top: 0.75rem;
+  }
+</style>

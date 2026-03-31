@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About — Owners Club" description="Owners Club is an AI-powered platform where small business owners buy and sell businesses.">
+  <section class="about-hero">
+    <div class="container">
+      <h1>About Owners Club</h1>
+      <p class="about-lead">
+        We're building the platform we wish existed when we started buying and selling businesses —
+        one that puts owners first, handles the complexity, and treats every transaction like it matters. Because it does.
+      </p>
+    </div>
+  </section>
+
+  <section class="about-content">
+    <div class="container about-grid">
+      <div class="about-block">
+        <h2>Why we exist</h2>
+        <p>
+          Buying or selling a small business is one of the biggest financial decisions most people will ever make.
+          Yet the process is opaque, fragmented, and often stacked against the owner. We're changing that.
+        </p>
+        <p>
+          Owners Club combines AI-powered tools with a members-only community to make business transactions
+          transparent, efficient, and fair. We handle the hard parts — valuations, matching, due diligence —
+          so you can focus on making the right decision.
+        </p>
+      </div>
+      <div class="about-block">
+        <h2>What we believe</h2>
+        <p>
+          Small business owners are the backbone of the economy. They deserve tools that respect their time,
+          their intelligence, and their investment. We believe the best deals happen when both sides have
+          access to good information and good technology.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    background-color: var(--oc-navy);
+    color: #fff;
+    padding: 5rem 0;
+    text-align: center;
+  }
+
+  .about-hero h1 {
+    color: #fff;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-lead {
+    color: var(--oc-steel);
+    font-size: 1.2rem;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .about-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 3rem;
+  }
+
+  .about-block h2 {
+    margin-bottom: 1rem;
+  }
+
+  .about-block p {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 640px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">
+      <span class="wordmark">Owners Club</span>
+      <p class="footer-tagline">The smartest way to buy or sell a business.</p>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <a href="/blog">Content library</a>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <a href="/join">Join the mailing list</a>
+      </div>
+    </div>
+  </div>
+  <div class="container footer-bottom">
+    <p>&copy; {currentYear} Owners Club. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--oc-navy);
+    color: var(--oc-steel);
+    padding: 4rem 0 1.5rem;
+    margin-top: 4rem;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    gap: 3rem;
+    flex-wrap: wrap;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .footer-brand .wordmark {
+    font-family: var(--font-headline);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #fff;
+    letter-spacing: 0.05em;
+  }
+
+  .footer-tagline {
+    color: var(--oc-steel);
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 4rem;
+    flex-wrap: wrap;
+  }
+
+  .footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-col h4 {
+    font-family: var(--font-headline);
+    color: #fff;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .footer-col a {
+    color: var(--oc-steel);
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-col a:hover {
+    color: var(--oc-gold);
+  }
+
+  .footer-bottom {
+    padding-top: 1.5rem;
+  }
+
+  .footer-bottom p {
+    font-size: 0.8rem;
+    color: var(--oc-mid-gray);
+  }
+
+  @media (max-width: 640px) {
+    .footer-links {
+      gap: 2rem;
+    }
+  }
+</style>

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 44" fill="none">
+  <!-- Shadow Cast Keystone: organic line style with offset shadow -->
+  <!-- Shadow (offset lower-right) -->
+  <path d="M9 8 Q7 6 31 6 Q33 6 30 38 Q29 40 12 40 Q10 40 9 8 Z"
+        stroke="#94A3B8" stroke-width="1.5" fill="none"
+        transform="translate(3, 3)" />
+  <!-- Connecting lines between form and shadow -->
+  <line x1="12" y1="38" x2="15" y2="41" stroke="#94A3B8" stroke-width="1" />
+  <line x1="28" y1="38" x2="31" y2="41" stroke="#94A3B8" stroke-width="1" />
+  <!-- Primary form -->
+  <path d="M7 6 Q5 4 33 4 Q35 4 31 36 Q30 38 10 38 Q8 38 7 6 Z"
+        stroke="#1A1A1A" stroke-width="2.5" fill="none" />
+</svg>
