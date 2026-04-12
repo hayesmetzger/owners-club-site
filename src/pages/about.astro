@@ -37,6 +37,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
     </div>
   </section>
+
+  <section class="about-cta">
+    <div class="container">
+      <h2>Join the club</h2>
+      <p>We're launching soon. Sign up for early access and insights on buying and selling businesses.</p>
+      <a href="/join" class="btn btn-gold">Get early access</a>
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
@@ -73,6 +81,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .about-block p {
     font-size: 1.05rem;
     line-height: 1.7;
+  }
+
+  .about-cta {
+    background: var(--oc-navy);
+    color: #fff;
+    text-align: center;
+  }
+
+  .about-cta h2 {
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .about-cta p {
+    color: var(--oc-steel);
+    font-size: 1.1rem;
+    max-width: 520px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
   }
 
   @media (max-width: 640px) {

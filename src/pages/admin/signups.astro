@@ -1,0 +1,240 @@
+---
+import { neon } from '@neondatabase/serverless';
+import { checkBasicAuth, unauthorizedResponse } from '../../lib/admin-auth';
+
+export const prerender = false;
+
+if (!checkBasicAuth(Astro.request)) {
+  return unauthorizedResponse();
+}
+
+type Row = {
+  id: number;
+  name: string;
+  email: string;
+  intent: string | null;
+  stage: string | null;
+  created_at: string;
+  completed_at: string | null;
+};
+
+const connectionString =
+  import.meta.env.DATABASE_URL || process.env.DATABASE_URL;
+
+let rows: Row[] = [];
+let loadError: string | null = null;
+
+if (!connectionString) {
+  loadError = 'DATABASE_URL not configured.';
+} else {
+  try {
+    const sql = neon(connectionString);
+    rows = (await sql`
+      SELECT id, name, email, intent, stage, created_at, completed_at
+      FROM signups
+      ORDER BY created_at DESC
+    `) as Row[];
+  } catch (err) {
+    console.error('admin signups query failed', err);
+    loadError = 'Failed to load signups.';
+  }
+}
+
+const total = rows.length;
+const completed = rows.filter((r) => r.completed_at).length;
+const completionRate =
+  total === 0 ? 0 : Math.round((completed / total) * 100);
+
+const intentCounts = rows.reduce<Record<string, number>>((acc, r) => {
+  if (r.intent) acc[r.intent] = (acc[r.intent] ?? 0) + 1;
+  return acc;
+}, {});
+
+function fmt(value: string | null) {
+  if (!value) return '—';
+  return new Date(value).toLocaleString('en-US', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  });
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Signups — Admin</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        margin: 0;
+        background: #0b1220;
+        color: #e5e7eb;
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin: 0 0 1.5rem;
+      }
+      .stats {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1.5rem;
+      }
+      .stat {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        padding: 0.875rem 1.25rem;
+        min-width: 140px;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #9ca3af;
+        margin-bottom: 0.25rem;
+      }
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+      }
+      .actions {
+        margin-bottom: 1rem;
+      }
+      .btn {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: #d4af37;
+        color: #0b1220;
+        border: 0;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+      }
+      .btn:hover { background: #e4be3e; }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: 0.875rem;
+      }
+      th, td {
+        padding: 0.625rem 0.875rem;
+        text-align: left;
+        border-bottom: 1px solid #1f2937;
+      }
+      th {
+        background: #0f172a;
+        font-weight: 600;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+      }
+      tr:last-child td { border-bottom: 0; }
+      tr:hover td { background: #0f172a; }
+      .pill {
+        display: inline-block;
+        padding: 0.125rem 0.5rem;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        background: #1f2937;
+        color: #d1d5db;
+      }
+      .pill.buy { background: #064e3b; color: #6ee7b7; }
+      .pill.sell { background: #7c2d12; color: #fdba74; }
+      .pill.both { background: #1e3a8a; color: #93c5fd; }
+      .pill.learning { background: #1f2937; color: #9ca3af; }
+      .pill.discovering { background: #581c87; color: #d8b4fe; }
+      .pill.executing { background: #14532d; color: #86efac; }
+      .check { color: #22c55e; font-weight: 600; }
+      .dash { color: #4b5563; }
+      .empty {
+        text-align: center;
+        padding: 3rem;
+        color: #6b7280;
+      }
+      .error {
+        background: #7f1d1d;
+        color: #fecaca;
+        padding: 1rem;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Signups</h1>
+
+    {loadError && <div class="error">{loadError}</div>}
+
+    {!loadError && (
+      <>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Total</div>
+            <div class="stat-value">{total}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Completed</div>
+            <div class="stat-value">{completed} <span style="font-size:0.9rem;color:#9ca3af">({completionRate}%)</span></div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Buy</div>
+            <div class="stat-value">{intentCounts.buy ?? 0}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Sell</div>
+            <div class="stat-value">{intentCounts.sell ?? 0}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Both</div>
+            <div class="stat-value">{intentCounts.both ?? 0}</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <a class="btn" href="/admin/signups.csv">Export CSV</a>
+        </div>
+
+        {total === 0 ? (
+          <div class="empty">No signups yet.</div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Intent</th>
+                <th>Stage</th>
+                <th>Done</th>
+                <th>Created</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map((r) => (
+                <tr>
+                  <td>{r.name}</td>
+                  <td>{r.email}</td>
+                  <td>{r.intent ? <span class={`pill ${r.intent}`}>{r.intent}</span> : <span class="dash">—</span>}</td>
+                  <td>{r.stage ? <span class={`pill ${r.stage}`}>{r.stage}</span> : <span class="dash">—</span>}</td>
+                  <td>{r.completed_at ? <span class="check">✓</span> : <span class="dash">–</span>}</td>
+                  <td>{fmt(r.created_at)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </>
+    )}
+  </body>
+</html>

@@ -13,7 +13,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         with the data, tools, and confidence to do it on your terms.
       </p>
       <div class="hero-actions">
-        <a href="/join" class="btn btn-gold">Join the mailing list</a>
+        <a href="/join" class="btn btn-gold">Join the club</a>
         <a href="/blog" class="btn btn-outline hero-outline">Read the blog</a>
       </div>
     </div>
@@ -27,18 +27,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <div class="steps-grid">
         <div class="step">
           <span class="step-num">01</span>
-          <h3>Know your number</h3>
-          <p>Get an AI-powered valuation grounded in real market data — not guesswork, not a sales pitch.</p>
+          <h3>Learn the landscape</h3>
+          <p>Education and owner resources to help you understand how buying and selling a business actually works — before you commit to anything.</p>
         </div>
         <div class="step">
           <span class="step-num">02</span>
-          <h3>Find the right match</h3>
-          <p>We surface buyers and sellers who fit what you're looking for, with the data you need to decide.</p>
+          <h3>Discover opportunities</h3>
+          <p>Connect with buyers and sellers who match what you're looking for, with the context you need to tell a real opportunity from a distraction.</p>
         </div>
         <div class="step">
           <span class="step-num">03</span>
           <h3>Close with confidence</h3>
-          <p>From due diligence to closing — our tools keep the process moving so nothing falls through the cracks.</p>
+          <p>The guidance and tools to move a deal from handshake to closing — so nothing important falls through the cracks.</p>
         </div>
       </div>
     </div>
@@ -64,21 +64,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- Mailing list CTA -->
+  <!-- Join the club CTA -->
   <section class="cta-section">
     <div class="container cta-inner">
       <h2>We're building something new</h2>
-      <p>Owners Club is launching soon. Join the mailing list to get early access, insights on buying and selling businesses, and a front-row seat as we build.</p>
-      <form class="signup-form" action="#" method="POST">
-        <input
-          type="email"
-          name="email"
-          placeholder="Your email address"
-          required
-          aria-label="Email address"
-        />
-        <button type="submit" class="btn btn-gold">Get early access</button>
-      </form>
+      <p>Owners Club is launching soon. Join the club to get early access, insights on buying and selling businesses, and a front-row seat as we build.</p>
+      <a href="/join" class="btn btn-gold cta-btn">Join the club</a>
       <p class="form-note">No spam, ever. Just useful stuff for business owners.</p>
     </div>
   </section>
@@ -131,6 +122,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   /* How it works */
   .how-it-works {
     text-align: center;
+    padding-bottom: var(--space-lg);
   }
 
   .section-lead {
@@ -175,6 +167,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   /* Value props */
   .value-props {
     background: var(--oc-warm-white);
+    padding-top: 0;
   }
 
   .value-grid {
@@ -223,45 +216,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     line-height: 1.6;
   }
 
-  .signup-form {
-    display: flex;
-    gap: 0.5rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .signup-form input {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border: 1px solid var(--oc-steel);
-    border-radius: 6px;
-    background: rgba(255, 255, 255, 0.08);
-    color: #fff;
-    min-width: 280px;
-    font-family: var(--font-body);
-  }
-
-  .signup-form input::placeholder {
-    color: var(--oc-mid-gray);
-  }
-
-  .signup-form input:focus {
-    outline: 2px solid var(--oc-gold);
-    border-color: var(--oc-gold);
+  .cta-btn {
+    margin-top: 1rem;
   }
 
   .form-note {
     font-size: 0.8rem;
     color: var(--oc-mid-gray);
-    margin-top: 0.75rem;
+    margin-top: 1rem;
   }
 
   @media (max-width: 640px) {
     .hero h1 {
       font-size: 2.25rem;
-    }
-    .signup-form input {
-      min-width: 100%;
     }
   }
 </style>

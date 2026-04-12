@@ -2,25 +2,193 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Join the mailing list — Owners Club" description="Get early access to Owners Club. No spam — just insights on buying and selling businesses.">
+<BaseLayout title="Join the club — Owners Club" description="Get early access to Owners Club. No spam — just insights on buying and selling businesses.">
   <section class="join-hero">
     <div class="container join-inner">
-      <h1>Join the club</h1>
-      <p class="join-lead">
-        We're launching soon. Sign up for early access, practical insights on buying and
-        selling businesses, and updates as we build.
-      </p>
-      <form class="join-form" action="#" method="POST">
-        <div class="form-row">
-          <input type="text" name="name" placeholder="Your name" required aria-label="Name" />
-          <input type="email" name="email" placeholder="Your email" required aria-label="Email" />
+      <div class="step-indicator" aria-hidden="true">
+        <span class="dot active" data-dot="1"></span>
+        <span class="dot" data-dot="2"></span>
+        <span class="dot" data-dot="3"></span>
+      </div>
+
+      <!-- Step 1: name + email -->
+      <div class="step" data-step="1">
+        <h1>Join the club</h1>
+        <p class="join-lead">
+          We're launching soon. Sign up for early access, practical insights on buying and
+          selling businesses, and updates as we build.
+        </p>
+        <form id="step1-form" class="join-form">
+          <div class="form-row">
+            <input type="text" name="name" placeholder="Your name" required aria-label="Name" />
+            <input type="email" name="email" placeholder="Your email" required aria-label="Email" />
+          </div>
+          <button type="submit" class="btn btn-gold">Continue</button>
+        </form>
+      </div>
+
+      <!-- Step 2: intent -->
+      <div class="step" data-step="2" hidden>
+        <h1>What brings you here?</h1>
+        <p class="join-lead">Tell us what you're focused on so we can tailor what we send you.</p>
+        <div class="choice-grid" data-field="intent">
+          <button type="button" class="choice" data-value="buy">
+            <span class="choice-label">Buying</span>
+            <span class="choice-desc">Looking to acquire a business</span>
+          </button>
+          <button type="button" class="choice" data-value="sell">
+            <span class="choice-label">Selling</span>
+            <span class="choice-desc">Exploring an exit from my business</span>
+          </button>
+          <button type="button" class="choice" data-value="both">
+            <span class="choice-label">Both</span>
+            <span class="choice-desc">Interested in either side of the table</span>
+          </button>
         </div>
-        <button type="submit" class="btn btn-gold">Get early access</button>
-      </form>
-      <p class="form-note">No spam, ever. Unsubscribe anytime.</p>
+      </div>
+
+      <!-- Step 3: stage -->
+      <div class="step" data-step="3" hidden>
+        <h1>Where are you in the process?</h1>
+        <p class="join-lead">We'll meet you where you are.</p>
+        <div class="choice-grid" data-field="stage">
+          <button type="button" class="choice" data-value="learning">
+            <span class="choice-label">Just learning</span>
+            <span class="choice-desc">Reading, researching, getting oriented</span>
+          </button>
+          <button type="button" class="choice" data-value="discovering">
+            <span class="choice-label">Discovering opportunities</span>
+            <span class="choice-desc">Actively looking, building a shortlist</span>
+          </button>
+          <button type="button" class="choice" data-value="executing">
+            <span class="choice-label">Executing</span>
+            <span class="choice-desc">I have something specific in motion</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 4: done -->
+      <div class="step" data-step="4" hidden>
+        <h1>You're in.</h1>
+        <p class="join-lead">
+          Thanks for joining. We'll be in touch with early access and insights tailored to what
+          you told us.
+        </p>
+      </div>
+
+      <p id="form-status" class="form-note" role="status" aria-live="polite">
+        No spam, ever. Unsubscribe anytime.
+      </p>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  import { track } from '@vercel/analytics';
+
+  type StepEl = HTMLElement;
+  const steps = Array.from(document.querySelectorAll<StepEl>('.step'));
+  const dots = Array.from(document.querySelectorAll<HTMLElement>('.dot'));
+  const status = document.getElementById('form-status')!;
+  const defaultNote = status.textContent;
+  const step1Form = document.getElementById('step1-form') as HTMLFormElement;
+
+  let token: string | null = null;
+
+  function showStep(n: number) {
+    steps.forEach((el) => {
+      el.hidden = Number(el.dataset.step) !== n;
+    });
+    dots.forEach((el) => {
+      const dn = Number(el.dataset.dot);
+      el.classList.toggle('active', dn <= Math.min(n, 3));
+    });
+    resetStatus();
+  }
+
+  function resetStatus() {
+    status.textContent = defaultNote;
+    status.classList.remove('error', 'success', 'loading');
+  }
+
+  function setStatus(text: string, kind: 'loading' | 'error' | 'success') {
+    status.textContent = text;
+    status.classList.remove('error', 'success', 'loading');
+    status.classList.add(kind);
+  }
+
+  // Step 1 submit
+  step1Form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const button = step1Form.querySelector('button[type="submit"]') as HTMLButtonElement;
+    const data = Object.fromEntries(new FormData(step1Form).entries());
+    button.disabled = true;
+    setStatus('Saving…', 'loading');
+    try {
+      const res = await fetch('/api/signup', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const body = await res.json().catch(() => ({}));
+      if (res.ok && body.ok && body.token) {
+        token = body.token;
+        track('signup_started');
+        showStep(2);
+      } else {
+        track('signup_error', { step: 'name_email', message: body.error || 'unknown' });
+        setStatus(body.error || 'Something went wrong. Please try again.', 'error');
+      }
+    } catch {
+      setStatus('Network error. Please try again.', 'error');
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  // Step 2 & 3 (choice grids)
+  document.querySelectorAll<HTMLElement>('.choice-grid').forEach((grid) => {
+    const field = grid.dataset.field as 'intent' | 'stage';
+    grid.querySelectorAll<HTMLButtonElement>('.choice').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (!token) return;
+        const value = btn.dataset.value!;
+        grid.querySelectorAll('.choice').forEach((b) => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        grid.querySelectorAll<HTMLButtonElement>('.choice').forEach((b) => (b.disabled = true));
+        setStatus('Saving…', 'loading');
+
+        const isFinal = field === 'stage';
+        try {
+          const res = await fetch('/api/signup/update', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ token, [field]: value, complete: isFinal }),
+          });
+          const body = await res.json().catch(() => ({}));
+          if (res.ok && body.ok) {
+            if (field === 'intent') {
+              track('signup_intent', { intent: value });
+              showStep(3);
+            } else {
+              track('signup_stage', { stage: value });
+              track('signup_completed');
+              showStep(4);
+            }
+          } else {
+            track('signup_error', { step: field, message: body.error || 'unknown' });
+            setStatus(body.error || 'Something went wrong. Please try again.', 'error');
+            grid.querySelectorAll<HTMLButtonElement>('.choice').forEach((b) => (b.disabled = false));
+          }
+        } catch {
+          track('signup_error', { step: field, message: 'network' });
+          setStatus('Network error. Please try again.', 'error');
+          grid.querySelectorAll<HTMLButtonElement>('.choice').forEach((b) => (b.disabled = false));
+        }
+      });
+    });
+  });
+</script>
 
 <style>
   .join-hero {
@@ -28,13 +196,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: #fff;
     padding: 6rem 0;
     text-align: center;
-    min-height: 60vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
   }
 
   .join-inner {
-    max-width: 520px;
+    max-width: 560px;
   }
 
   .join-hero h1 {
@@ -47,6 +215,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 1.1rem;
     line-height: 1.6;
     margin-bottom: 2.5rem;
+  }
+
+  .step-indicator {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .dot.active {
+    background: var(--oc-gold);
+    transform: scale(1.2);
+  }
+
+  .step[hidden] {
+    display: none;
   }
 
   .join-form {
@@ -84,9 +276,71 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     border-color: var(--oc-gold);
   }
 
+  .choice-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .choice {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--oc-steel);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+  }
+
+  .choice:hover:not(:disabled) {
+    border-color: var(--oc-gold);
+    background: rgba(212, 175, 55, 0.08);
+  }
+
+  .choice:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .choice.selected {
+    border-color: var(--oc-gold);
+    background: rgba(212, 175, 55, 0.15);
+    opacity: 1;
+  }
+
+  .choice-label {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+
+  .choice-desc {
+    font-size: 0.875rem;
+    color: var(--oc-mid-gray);
+  }
+
   .form-note {
     font-size: 0.8rem;
     color: var(--oc-mid-gray);
-    margin-top: 0.75rem;
+    margin-top: 1.5rem;
+    transition: color 0.2s ease;
+  }
+
+  .form-note.success {
+    color: var(--oc-gold);
+    font-weight: 500;
+  }
+
+  .form-note.error {
+    color: #ff6b6b;
+  }
+
+  .form-note.loading {
+    color: var(--oc-steel);
   }
 </style>
