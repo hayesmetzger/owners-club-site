@@ -1,7 +1,7 @@
 ---
 title: "Myth: I'll Sell When I'm Ready to Retire"
 description: "That's exactly the wrong time. The moment you want out is when buyers will negotiate hardest."
-pubDate: 2026-03-09
+pubDate: 2026-04-13
 author: "Owners Club"
 tags: ["timing", "selling", "exit-planning", "myths"]
 series: "Myth Busters"

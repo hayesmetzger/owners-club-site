@@ -1,7 +1,7 @@
 ---
 title: "What Is an Earnout? (And How to Negotiate One)"
 description: "Understand how earnouts work in business sales, why buyers want them, and how to protect yourself when a portion of your payment is performance-based."
-pubDate: 2025-10-13
+pubDate: 2026-02-23
 author: "Owners Club"
 tags: [deal-structure, earnout, negotiation]
 series: "Quick Explainers"

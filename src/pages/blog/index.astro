@@ -2,8 +2,10 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
+const now = new Date();
 const posts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)
+  .filter((post) => post.data.pubDate <= now)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 

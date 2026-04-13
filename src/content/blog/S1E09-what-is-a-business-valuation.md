@@ -1,7 +1,7 @@
 ---
 title: "What Is a Business Valuation? (And Which Type Do You Need?)"
 description: "Understand the three types of business valuations, what each costs, and how to choose the right one for your situation."
-pubDate: 2025-11-24
+pubDate: 2026-03-09
 author: "Owners Club"
 tags: [valuation, selling, preparation]
 series: "Quick Explainers"

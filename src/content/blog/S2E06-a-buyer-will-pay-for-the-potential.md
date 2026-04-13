@@ -1,7 +1,7 @@
 ---
 title: "Myth: A Buyer Will Pay for the Potential"
 description: "No, they won't. Potential is risk, and buyers pay only for proven performance."
-pubDate: 2026-03-23
+pubDate: 2026-04-17
 author: "Owners Club"
 tags: ["valuation", "myths", "negotiation"]
 series: "Myth Busters"

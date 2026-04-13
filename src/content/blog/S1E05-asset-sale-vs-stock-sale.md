@@ -1,7 +1,7 @@
 ---
 title: "Asset Sale vs. Stock Sale (What's the Difference?)"
 description: "Learn the difference between selling your business assets and selling your company stock, and understand the major tax implications of each."
-pubDate: 2025-10-27
+pubDate: 2026-02-27
 author: "Owners Club"
 tags: [deal-structure, taxes, selling]
 series: "Quick Explainers"

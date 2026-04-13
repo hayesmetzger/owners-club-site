@@ -1,7 +1,7 @@
 ---
 title: "What Are Reps & Warranties? (Legal Promises About Your Business)"
 description: "Understand representations and warranties in purchase agreements—what you're promising, your liability, and how to limit exposure."
-pubDate: 2026-01-19
+pubDate: 2026-03-27
 author: "Owners Club"
 tags: [legal, reps-and-warranties, closing]
 series: "Quick Explainers"

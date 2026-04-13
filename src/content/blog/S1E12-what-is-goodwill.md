@@ -1,7 +1,7 @@
 ---
 title: "What Is Goodwill? (The Intangible Value of Your Business)"
 description: "Understand goodwill, why it's the majority of what you're selling, and how to build it before you exit."
-pubDate: 2025-12-15
+pubDate: 2026-03-16
 author: "Owners Club"
 tags: [valuation, goodwill, selling]
 series: "Quick Explainers"

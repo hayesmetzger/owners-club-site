@@ -1,7 +1,7 @@
 ---
 title: "Myth: My Accountant Said It's Worth..."
 description: "Your CPA minimizes taxes, not valuation. There's usually a 30-50% gap between what your accountant sees and what a buyer will pay for."
-pubDate: 2026-03-16
+pubDate: 2026-04-15
 author: "Owners Club"
 tags: ["valuation", "myths", "accountant", "recasting"]
 series: "Myth Busters"

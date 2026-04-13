@@ -1,7 +1,7 @@
 ---
 title: "How to Sell Your Business Yourself (The DIY Selling Guide)"
 description: "Explore the six-step process for selling your business without a broker. Learn the real costs, what it takes, and when DIY selling makes sense."
-pubDate: 2025-10-06
+pubDate: 2026-02-20
 author: "Owners Club"
 tags: [selling, DIY, costs]
 series: "Quick Explainers"

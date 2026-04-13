@@ -1,7 +1,7 @@
 ---
 title: "What Are Valuation Multiples? (How Price Is Determined)"
 description: "Understand how valuation multiples work—the formula that determines what your business is worth—and what drives them."
-pubDate: 2026-01-05
+pubDate: 2026-03-23
 author: "Owners Club"
 tags: [valuation, multiples, selling]
 series: "Quick Explainers"

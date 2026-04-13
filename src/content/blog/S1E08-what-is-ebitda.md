@@ -1,7 +1,7 @@
 ---
 title: "What Is EBITDA? (And When to Use It)"
 description: "Learn what EBITDA is, how it differs from SDE, and when larger businesses use it as a valuation metric."
-pubDate: 2025-11-17
+pubDate: 2026-03-06
 author: "Owners Club"
 tags: [valuation, EBITDA, metrics]
 series: "Quick Explainers"

@@ -1,7 +1,7 @@
 ---
 title: "What Is a CIM? (Confidential Information Memorandum)"
 description: "Learn what a CIM is, why it matters in business sales, and how it helps you attract serious buyers and better valuations."
-pubDate: 2025-12-08
+pubDate: 2026-03-13
 author: "Owners Club"
 tags: [CIM, selling, preparation]
 series: "Quick Explainers"

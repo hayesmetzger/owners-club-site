@@ -1,7 +1,7 @@
 ---
 title: "What Is a Letter of Intent? (And Why It Matters)"
 description: "Understand what a Letter of Intent is, which terms are binding, and how it sets the stage for the rest of your sale."
-pubDate: 2025-11-10
+pubDate: 2026-03-04
 author: "Owners Club"
 tags: [deal-structure, LOI, negotiation]
 series: "Quick Explainers"

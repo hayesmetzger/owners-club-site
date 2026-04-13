@@ -1,7 +1,7 @@
 ---
 title: "Myth: I'll Just Sell to My Employees"
 description: "The employee buyout sounds perfect in theory. Here's why it rarely works in practice."
-pubDate: 2026-02-23
+pubDate: 2026-04-08
 author: "Owners Club"
 tags: ["selling", "employee-buyout", "myths"]
 series: "Myth Busters"

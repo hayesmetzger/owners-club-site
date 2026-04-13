@@ -1,7 +1,7 @@
 ---
 title: "What Is Working Capital? (And Why It's Often Disputed)"
 description: "Understand working capital in business sales, how it's calculated, and why it's one of the most common deal disputes."
-pubDate: 2026-01-26
+pubDate: 2026-03-30
 author: "Owners Club"
 tags: [deal-structure, working-capital, negotiation]
 series: "Quick Explainers"

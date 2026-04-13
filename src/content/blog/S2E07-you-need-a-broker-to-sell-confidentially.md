@@ -1,7 +1,7 @@
 ---
 title: "Myth: You Need a Broker to Sell Confidentially"
 description: "False. Online marketplaces have built-in confidentiality tools. A leaked sale can cost you 40% in value—here's how to prevent it."
-pubDate: 2026-03-30
+pubDate: 2026-04-20
 author: "Owners Club"
 tags: ["confidentiality", "myths", "selling"]
 series: "Myth Busters"

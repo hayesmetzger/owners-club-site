@@ -1,7 +1,7 @@
 ---
 title: "Buyer's Rep vs. Seller's Rep (Who's On Your Side?)"
 description: "Understand the role of buyer's reps and seller's reps, why representation matters, and when you might represent yourself."
-pubDate: 2026-02-09
+pubDate: 2026-04-03
 author: "Owners Club"
 tags: [negotiation, representation, selling]
 series: "Quick Explainers"

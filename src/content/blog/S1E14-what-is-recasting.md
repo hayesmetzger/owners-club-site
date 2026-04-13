@@ -1,7 +1,7 @@
 ---
 title: "What Is Recasting? (Adjusting Financials to Show True Profit)"
 description: "Learn what recasting is, how it affects your valuation, and why you need to be careful not to be too aggressive."
-pubDate: 2025-12-29
+pubDate: 2026-03-20
 author: "Owners Club"
 tags: [valuation, recasting, financials]
 series: "Quick Explainers"

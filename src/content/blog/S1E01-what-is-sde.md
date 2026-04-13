@@ -1,7 +1,7 @@
 ---
 title: "What Is SDE? (Seller's Discretionary Earnings Explained)"
 description: "SDE is the metric that determines what your business is worth to a buyer. Learn how it's calculated and why it beats net income."
-pubDate: 2025-09-29
+pubDate: 2026-02-18
 author: "Owners Club"
 tags: [valuation, SDE, selling]
 series: "Quick Explainers"

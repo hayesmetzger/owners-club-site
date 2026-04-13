@@ -1,7 +1,7 @@
 ---
 title: "What Is a Transition Period? (How Long Do You Stay?)"
 description: "Understand transition periods in business sales—what they involve, how long they typically last, and how to negotiate compensation."
-pubDate: 2025-12-22
+pubDate: 2026-03-18
 author: "Owners Club"
 tags: [transition, selling, closing]
 series: "Quick Explainers"

@@ -1,7 +1,7 @@
 ---
 title: "How Are Small Business Sales Funded? (The Capital Stack)"
 description: "Understand where the money comes from in a small business sale—SBA loans, seller financing, and buyer cash."
-pubDate: 2025-12-01
+pubDate: 2026-03-11
 author: "Owners Club"
 tags: [funding, SBA, seller-financing]
 series: "Quick Explainers"

@@ -1,7 +1,7 @@
 ---
 title: "Myth: The First Offer Is Always a Lowball"
 description: "Not true. 65% of small business deals close at or near the initial offer. Time on market kills value faster than negotiation wins."
-pubDate: 2026-04-06
+pubDate: 2026-04-22
 author: "Owners Club"
 tags: ["negotiation", "myths", "offers"]
 series: "Myth Busters"

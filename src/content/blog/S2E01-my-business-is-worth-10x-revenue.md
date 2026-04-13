@@ -1,7 +1,7 @@
 ---
 title: "Myth: My Business Is Worth 10x Revenue"
 description: "Revenue multiples are a dangerous shortcut. Here's why your business valuation depends on what you actually earn."
-pubDate: 2026-02-16
+pubDate: 2026-04-06
 author: "Owners Club"
 tags: ["valuation", "myths", "SDE"]
 series: "Myth Busters"

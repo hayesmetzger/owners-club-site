@@ -1,7 +1,7 @@
 ---
 title: "What Is Due Diligence? (And How to Prepare)"
 description: "Understand what due diligence is, what buyers will investigate, and how to prepare your business so the process goes smoothly."
-pubDate: 2025-10-20
+pubDate: 2026-02-25
 author: "Owners Club"
 tags: [due-diligence, selling, preparation]
 series: "Quick Explainers"

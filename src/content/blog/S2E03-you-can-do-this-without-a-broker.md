@@ -1,7 +1,7 @@
 ---
 title: "Myth: You Need a Broker to Sell Your Business"
 description: "The industry default says you can't sell without an intermediary. The reality can save you $50K to $120K on your exit."
-pubDate: 2026-03-02
+pubDate: 2026-04-10
 author: "Owners Club"
 tags: ["DIY", "selling", "costs", "myths"]
 series: "Myth Busters"

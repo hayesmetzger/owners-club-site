@@ -1,7 +1,7 @@
 ---
 title: "What Is a Non-Compete? (And How to Negotiate One)"
 description: "Understand non-compete agreements in business sales—what they cover, what's reasonable, and how to protect yourself."
-pubDate: 2025-11-03
+pubDate: 2026-03-02
 author: "Owners Club"
 tags: [legal, non-compete, negotiation]
 series: "Quick Explainers"

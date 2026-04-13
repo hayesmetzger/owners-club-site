@@ -1,7 +1,7 @@
 ---
 title: "What Is Escrow? (Protecting Both Sides at Closing)"
 description: "Understand escrow, why it's held, how long it lasts, and how to negotiate escrow terms that work for you."
-pubDate: 2026-01-12
+pubDate: 2026-03-25
 author: "Owners Club"
 tags: [closing, escrow, deal-structure]
 series: "Quick Explainers"

@@ -1,7 +1,7 @@
 ---
 title: "What Is a Holdback? (And How to Negotiate One)"
 description: "Understand holdbacks in business sales—how they work, why buyers want them, and how to negotiate reasonable terms."
-pubDate: 2026-02-02
+pubDate: 2026-04-01
 author: "Owners Club"
 tags: [closing, holdback, deal-structure]
 series: "Quick Explainers"
