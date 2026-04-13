@@ -1,6 +1,8 @@
-import { neon } from '@neondatabase/serverless';
+import { neon, type NeonQueryFunction } from '@neondatabase/serverless';
 
-export function getSql() {
+export type Sql = NeonQueryFunction<false, false>;
+
+export function getSql(): Sql | null {
   const connectionString =
     import.meta.env.DATABASE_URL || process.env.DATABASE_URL;
   if (!connectionString) {
@@ -12,7 +14,7 @@ export function getSql() {
 
 let eventsEnsured = false;
 
-export async function ensureEventsTable(sql: ReturnType<typeof neon>) {
+export async function ensureEventsTable(sql: Sql) {
   if (eventsEnsured) return;
   await sql`
     CREATE TABLE IF NOT EXISTS events (

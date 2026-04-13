@@ -8,32 +8,17 @@ if (!checkBasicAuth(Astro.request)) {
   return unauthorizedResponse();
 }
 
-type FunnelRow = { name: string; count: number; sessions: number };
-type BlogRow = {
-  slug: string;
+type PageRow = {
+  path: string;
   views: number;
   sessions: number;
   last_viewed: string;
 };
 
-const FUNNEL_ORDER = [
-  'join_view',
-  'signup_started',
-  'signup_intent',
-  'signup_stage',
-] as const;
-
-const FUNNEL_LABELS: Record<string, string> = {
-  join_view: 'Viewed /join',
-  signup_started: 'Entered name + email',
-  signup_intent: 'Chose intent',
-  signup_stage: 'Chose stage',
-};
-
-let funnelRows: FunnelRow[] = [];
-let blogRows: BlogRow[] = [];
-let totalEvents = 0;
-let errorCount = 0;
+let pageRows: PageRow[] = [];
+let totalViews = 0;
+let totalSessions = 0;
+let viewsLast24h = 0;
 let loadError: string | null = null;
 
 const sql = getSql();
@@ -44,50 +29,33 @@ if (!sql) {
   try {
     await ensureEventsTable(sql);
 
-    const funnelRaw = (await sql`
-      SELECT name,
-             COUNT(*)::int AS count,
-             COUNT(DISTINCT session_id)::int AS sessions
-      FROM events
-      WHERE name = ANY(${FUNNEL_ORDER as unknown as string[]})
-      GROUP BY name
-    `) as FunnelRow[];
-    const byName = new Map(funnelRaw.map((r) => [r.name, r]));
-    funnelRows = FUNNEL_ORDER.map(
-      (name) => byName.get(name) ?? { name, count: 0, sessions: 0 }
-    );
-
-    blogRows = (await sql`
-      SELECT properties->>'path' AS slug,
+    pageRows = (await sql`
+      SELECT properties->>'path' AS path,
              COUNT(*)::int AS views,
              COUNT(DISTINCT session_id)::int AS sessions,
              MAX(created_at) AS last_viewed
       FROM events
       WHERE name = 'page_view'
-        AND properties->>'path' LIKE '/blog/%'
+        AND properties->>'path' IS NOT NULL
       GROUP BY properties->>'path'
       ORDER BY views DESC
-    `) as BlogRow[];
+    `) as PageRow[];
 
     const totals = (await sql`
       SELECT
         COUNT(*)::int AS total,
-        COUNT(*) FILTER (WHERE name = 'signup_error')::int AS errors
+        COUNT(DISTINCT session_id)::int AS sessions,
+        COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '24 hours')::int AS last24
       FROM events
-    `) as Array<{ total: number; errors: number }>;
-    totalEvents = totals[0]?.total ?? 0;
-    errorCount = totals[0]?.errors ?? 0;
+      WHERE name = 'page_view'
+    `) as Array<{ total: number; sessions: number; last24: number }>;
+    totalViews = totals[0]?.total ?? 0;
+    totalSessions = totals[0]?.sessions ?? 0;
+    viewsLast24h = totals[0]?.last24 ?? 0;
   } catch (err) {
-    console.error('admin analytics query failed', err);
-    loadError = 'Failed to load analytics.';
+    console.error('admin pages query failed', err);
+    loadError = 'Failed to load page views.';
   }
-}
-
-const topOfFunnel = funnelRows[0]?.sessions ?? 0;
-
-function pctOf(n: number, base: number) {
-  if (base === 0) return '—';
-  return `${Math.round((n / base) * 100)}%`;
 }
 
 function fmt(value: string | null) {
@@ -104,7 +72,7 @@ function fmt(value: string | null) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex,nofollow" />
-    <title>Analytics — Admin</title>
+    <title>Pages — Admin</title>
     <style>
       * { box-sizing: border-box; }
       body {
@@ -117,11 +85,6 @@ function fmt(value: string | null) {
       h1 {
         font-size: 1.5rem;
         margin: 0 0 0.5rem;
-      }
-      h2 {
-        font-size: 1.1rem;
-        margin: 2rem 0 0.75rem;
-        color: #fff;
       }
       nav {
         margin-bottom: 1.5rem;
@@ -138,7 +101,7 @@ function fmt(value: string | null) {
         display: flex;
         gap: 1rem;
         flex-wrap: wrap;
-        margin-bottom: 0.5rem;
+        margin-bottom: 1.5rem;
       }
       .stat {
         background: #111827;
@@ -184,7 +147,10 @@ function fmt(value: string | null) {
       td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
       tr:last-child td { border-bottom: 0; }
       tr:hover td { background: #0f172a; }
-      .dash { color: #4b5563; }
+      td.path {
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        color: #d1d5db;
+      }
       .empty {
         text-align: center;
         padding: 3rem;
@@ -196,36 +162,14 @@ function fmt(value: string | null) {
         padding: 1rem;
         border-radius: 6px;
       }
-      .bar-wrap {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-      }
-      .bar {
-        flex: 1;
-        height: 8px;
-        background: #1f2937;
-        border-radius: 4px;
-        overflow: hidden;
-        min-width: 80px;
-      }
-      .bar-fill {
-        height: 100%;
-        background: #d4af37;
-      }
-      .hint {
-        color: #6b7280;
-        font-size: 0.8rem;
-        margin-top: 0.25rem;
-      }
     </style>
   </head>
   <body>
-    <h1>Analytics</h1>
+    <h1>Page views</h1>
     <nav>
       <a href="/admin/signups">Signups</a>
-      <a href="/admin/pages">Pages</a>
-      <a href="/admin/analytics" class="active">Analytics</a>
+      <a href="/admin/pages" class="active">Pages</a>
+      <a href="/admin/analytics">Analytics</a>
     </nav>
 
     {loadError && <div class="error">{loadError}</div>}
@@ -234,72 +178,39 @@ function fmt(value: string | null) {
       <>
         <div class="stats">
           <div class="stat">
-            <div class="stat-label">Total events</div>
-            <div class="stat-value">{totalEvents.toLocaleString()}</div>
+            <div class="stat-label">Total views</div>
+            <div class="stat-value">{totalViews.toLocaleString()}</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Errors</div>
-            <div class="stat-value">{errorCount}</div>
+            <div class="stat-label">Unique sessions</div>
+            <div class="stat-value">{totalSessions.toLocaleString()}</div>
           </div>
           <div class="stat">
-            <div class="stat-label">Blog posts tracked</div>
-            <div class="stat-value">{blogRows.length}</div>
+            <div class="stat-label">Views (24h)</div>
+            <div class="stat-value">{viewsLast24h.toLocaleString()}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Pages tracked</div>
+            <div class="stat-value">{pageRows.length}</div>
           </div>
         </div>
 
-        <h2>Signup funnel</h2>
-        <p class="hint">Conversion % is relative to unique sessions at the top of the funnel.</p>
-        {topOfFunnel === 0 ? (
-          <div class="empty">No funnel events yet.</div>
+        {pageRows.length === 0 ? (
+          <div class="empty">No page views yet.</div>
         ) : (
           <table>
             <thead>
               <tr>
-                <th>Step</th>
-                <th class="num">Sessions</th>
-                <th class="num">Events</th>
-                <th class="num">% of top</th>
-                <th>Relative</th>
-              </tr>
-            </thead>
-            <tbody>
-              {funnelRows.map((r) => {
-                const pct = topOfFunnel === 0 ? 0 : (r.sessions / topOfFunnel) * 100;
-                return (
-                  <tr>
-                    <td>{FUNNEL_LABELS[r.name] ?? r.name}</td>
-                    <td class="num">{r.sessions.toLocaleString()}</td>
-                    <td class="num">{r.count.toLocaleString()}</td>
-                    <td class="num">{pctOf(r.sessions, topOfFunnel)}</td>
-                    <td>
-                      <div class="bar-wrap">
-                        <div class="bar"><div class="bar-fill" style={`width:${pct}%`}></div></div>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        )}
-
-        <h2>Blog views</h2>
-        {blogRows.length === 0 ? (
-          <div class="empty">No blog views yet.</div>
-        ) : (
-          <table>
-            <thead>
-              <tr>
-                <th>Post</th>
+                <th>Path</th>
                 <th class="num">Views</th>
                 <th class="num">Unique sessions</th>
                 <th>Last viewed</th>
               </tr>
             </thead>
             <tbody>
-              {blogRows.map((r) => (
+              {pageRows.map((r) => (
                 <tr>
-                  <td>{r.slug}</td>
+                  <td class="path">{r.path}</td>
                   <td class="num">{r.views.toLocaleString()}</td>
                   <td class="num">{r.sessions.toLocaleString()}</td>
                   <td>{fmt(r.last_viewed)}</td>

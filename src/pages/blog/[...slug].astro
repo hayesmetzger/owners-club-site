@@ -56,7 +56,7 @@ const jsonLd = {
   keywords={tags}
   jsonLd={jsonLd}
 >
-  <article class="blog-post" data-slug={post.id}>
+  <article class="blog-post">
     <div class="container post-container">
       <header class="post-header">
         {series && (
@@ -83,13 +83,6 @@ const jsonLd = {
       </footer>
     </div>
   </article>
-
-  <script>
-    import { trackEvent } from '../../lib/analytics-client';
-    const article = document.querySelector<HTMLElement>('.blog-post');
-    const slug = article?.dataset.slug;
-    if (slug) trackEvent('blog_view', { slug });
-  </script>
 </BaseLayout>
 
 <style>

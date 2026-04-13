@@ -4,7 +4,7 @@ import { getSql, ensureEventsTable } from '../../lib/db';
 export const prerender = false;
 
 const ALLOWED_EVENTS = new Set([
-  'blog_view',
+  'page_view',
   'join_view',
   'signup_started',
   'signup_intent',

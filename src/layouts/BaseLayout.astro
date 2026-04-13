@@ -81,5 +81,9 @@ const absoluteOgImage = ogImage
       <slot />
     </main>
     <Footer />
+    <script>
+      import { trackEvent } from '../lib/analytics-client';
+      trackEvent('page_view', { path: location.pathname });
+    </script>
   </body>
 </html>
