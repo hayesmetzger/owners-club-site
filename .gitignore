@@ -1,2 +1,14 @@
-.vercel
+# dependencies
+node_modules/
+
+# build output
+dist/
+.astro/
+
+# env / secrets
 .env*.local
+.vercel
+
+# tooling
+.claude/
+.DS_Store
