@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://theownersclub.ai/sitemap-index.xml

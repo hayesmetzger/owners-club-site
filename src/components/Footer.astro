@@ -21,6 +21,13 @@ const currentYear = new Date().getFullYear();
       <div class="footer-col">
         <h4>Connect</h4>
         <a href="/join">Join the club</a>
+        <a class="icon-link" href="https://www.youtube.com/@TheOwnersAcademy" target="_blank" rel="noopener">
+          <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="3" />
+            <path d="M10 9 L16 12 L10 15 Z" />
+          </svg>
+          <span>YouTube</span>
+        </a>
       </div>
     </div>
   </div>
@@ -88,6 +95,12 @@ const currentYear = new Date().getFullYear();
 
   .footer-col a:hover {
     color: var(--oc-gold);
+  }
+
+  .icon-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   .footer-bottom {
