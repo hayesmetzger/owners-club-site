@@ -1,0 +1,313 @@
+---
+import { getSql, ensureEventsTable } from '../../lib/db';
+import { checkBasicAuth, unauthorizedResponse } from '../../lib/admin-auth';
+
+export const prerender = false;
+
+if (!checkBasicAuth(Astro.request)) {
+  return unauthorizedResponse();
+}
+
+type FunnelRow = { name: string; count: number; sessions: number };
+type BlogRow = {
+  slug: string;
+  views: number;
+  sessions: number;
+  last_viewed: string;
+};
+
+const FUNNEL_ORDER = [
+  'join_view',
+  'signup_started',
+  'signup_intent',
+  'signup_stage',
+] as const;
+
+const FUNNEL_LABELS: Record<string, string> = {
+  join_view: 'Viewed /join',
+  signup_started: 'Entered name + email',
+  signup_intent: 'Chose intent',
+  signup_stage: 'Chose stage',
+};
+
+let funnelRows: FunnelRow[] = [];
+let blogRows: BlogRow[] = [];
+let totalEvents = 0;
+let errorCount = 0;
+let loadError: string | null = null;
+
+const sql = getSql();
+
+if (!sql) {
+  loadError = 'DATABASE_URL not configured.';
+} else {
+  try {
+    await ensureEventsTable(sql);
+
+    const funnelRaw = (await sql`
+      SELECT name,
+             COUNT(*)::int AS count,
+             COUNT(DISTINCT session_id)::int AS sessions
+      FROM events
+      WHERE name = ANY(${FUNNEL_ORDER as unknown as string[]})
+      GROUP BY name
+    `) as FunnelRow[];
+    const byName = new Map(funnelRaw.map((r) => [r.name, r]));
+    funnelRows = FUNNEL_ORDER.map(
+      (name) => byName.get(name) ?? { name, count: 0, sessions: 0 }
+    );
+
+    blogRows = (await sql`
+      SELECT properties->>'slug' AS slug,
+             COUNT(*)::int AS views,
+             COUNT(DISTINCT session_id)::int AS sessions,
+             MAX(created_at) AS last_viewed
+      FROM events
+      WHERE name = 'blog_view'
+        AND properties->>'slug' IS NOT NULL
+      GROUP BY properties->>'slug'
+      ORDER BY views DESC
+    `) as BlogRow[];
+
+    const totals = (await sql`
+      SELECT
+        COUNT(*)::int AS total,
+        COUNT(*) FILTER (WHERE name = 'signup_error')::int AS errors
+      FROM events
+    `) as Array<{ total: number; errors: number }>;
+    totalEvents = totals[0]?.total ?? 0;
+    errorCount = totals[0]?.errors ?? 0;
+  } catch (err) {
+    console.error('admin analytics query failed', err);
+    loadError = 'Failed to load analytics.';
+  }
+}
+
+const topOfFunnel = funnelRows[0]?.sessions ?? 0;
+
+function pctOf(n: number, base: number) {
+  if (base === 0) return '—';
+  return `${Math.round((n / base) * 100)}%`;
+}
+
+function fmt(value: string | null) {
+  if (!value) return '—';
+  return new Date(value).toLocaleString('en-US', {
+    dateStyle: 'short',
+    timeStyle: 'short',
+  });
+}
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Analytics — Admin</title>
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        margin: 0;
+        background: #0b1220;
+        color: #e5e7eb;
+        padding: 2rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+        margin: 0 0 0.5rem;
+      }
+      h2 {
+        font-size: 1.1rem;
+        margin: 2rem 0 0.75rem;
+        color: #fff;
+      }
+      nav {
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+      }
+      nav a {
+        color: #9ca3af;
+        text-decoration: none;
+        margin-right: 1rem;
+      }
+      nav a:hover { color: #d4af37; }
+      nav a.active { color: #fff; font-weight: 600; }
+      .stats {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 0.5rem;
+      }
+      .stat {
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        padding: 0.875rem 1.25rem;
+        min-width: 140px;
+      }
+      .stat-label {
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: #9ca3af;
+        margin-bottom: 0.25rem;
+      }
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #fff;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #111827;
+        border: 1px solid #1f2937;
+        border-radius: 8px;
+        overflow: hidden;
+        font-size: 0.875rem;
+      }
+      th, td {
+        padding: 0.625rem 0.875rem;
+        text-align: left;
+        border-bottom: 1px solid #1f2937;
+      }
+      th {
+        background: #0f172a;
+        font-weight: 600;
+        color: #9ca3af;
+        text-transform: uppercase;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+      }
+      td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+      tr:last-child td { border-bottom: 0; }
+      tr:hover td { background: #0f172a; }
+      .dash { color: #4b5563; }
+      .empty {
+        text-align: center;
+        padding: 3rem;
+        color: #6b7280;
+      }
+      .error {
+        background: #7f1d1d;
+        color: #fecaca;
+        padding: 1rem;
+        border-radius: 6px;
+      }
+      .bar-wrap {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      .bar {
+        flex: 1;
+        height: 8px;
+        background: #1f2937;
+        border-radius: 4px;
+        overflow: hidden;
+        min-width: 80px;
+      }
+      .bar-fill {
+        height: 100%;
+        background: #d4af37;
+      }
+      .hint {
+        color: #6b7280;
+        font-size: 0.8rem;
+        margin-top: 0.25rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Analytics</h1>
+    <nav>
+      <a href="/admin/signups">Signups</a>
+      <a href="/admin/analytics" class="active">Analytics</a>
+    </nav>
+
+    {loadError && <div class="error">{loadError}</div>}
+
+    {!loadError && (
+      <>
+        <div class="stats">
+          <div class="stat">
+            <div class="stat-label">Total events</div>
+            <div class="stat-value">{totalEvents.toLocaleString()}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Errors</div>
+            <div class="stat-value">{errorCount}</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label">Blog posts tracked</div>
+            <div class="stat-value">{blogRows.length}</div>
+          </div>
+        </div>
+
+        <h2>Signup funnel</h2>
+        <p class="hint">Conversion % is relative to unique sessions at the top of the funnel.</p>
+        {topOfFunnel === 0 ? (
+          <div class="empty">No funnel events yet.</div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Step</th>
+                <th class="num">Sessions</th>
+                <th class="num">Events</th>
+                <th class="num">% of top</th>
+                <th>Relative</th>
+              </tr>
+            </thead>
+            <tbody>
+              {funnelRows.map((r) => {
+                const pct = topOfFunnel === 0 ? 0 : (r.sessions / topOfFunnel) * 100;
+                return (
+                  <tr>
+                    <td>{FUNNEL_LABELS[r.name] ?? r.name}</td>
+                    <td class="num">{r.sessions.toLocaleString()}</td>
+                    <td class="num">{r.count.toLocaleString()}</td>
+                    <td class="num">{pctOf(r.sessions, topOfFunnel)}</td>
+                    <td>
+                      <div class="bar-wrap">
+                        <div class="bar"><div class="bar-fill" style={`width:${pct}%`}></div></div>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        )}
+
+        <h2>Blog views</h2>
+        {blogRows.length === 0 ? (
+          <div class="empty">No blog views yet.</div>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>Post</th>
+                <th class="num">Views</th>
+                <th class="num">Unique sessions</th>
+                <th>Last viewed</th>
+              </tr>
+            </thead>
+            <tbody>
+              {blogRows.map((r) => (
+                <tr>
+                  <td>{r.slug}</td>
+                  <td class="num">{r.views.toLocaleString()}</td>
+                  <td class="num">{r.sessions.toLocaleString()}</td>
+                  <td>{fmt(r.last_viewed)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </>
+    )}
+  </body>
+</html>

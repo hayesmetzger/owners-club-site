@@ -84,7 +84,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
-  import { track } from '@vercel/analytics';
+  import { trackEvent } from '../lib/analytics-client';
+  trackEvent('join_view');
 
   type StepEl = HTMLElement;
   const steps = Array.from(document.querySelectorAll<StepEl>('.step'));
@@ -133,10 +134,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       const body = await res.json().catch(() => ({}));
       if (res.ok && body.ok && body.token) {
         token = body.token;
-        track('signup_started');
+        trackEvent('signup_started');
         showStep(2);
       } else {
-        track('signup_error', { step: 'name_email', message: body.error || 'unknown' });
+        trackEvent('signup_error', { step: 'name_email', message: body.error || 'unknown' });
         setStatus(body.error || 'Something went wrong. Please try again.', 'error');
       }
     } catch {
@@ -168,20 +169,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           const body = await res.json().catch(() => ({}));
           if (res.ok && body.ok) {
             if (field === 'intent') {
-              track('signup_intent', { intent: value });
+              trackEvent('signup_intent', { intent: value });
               showStep(3);
             } else {
-              track('signup_stage', { stage: value });
-              track('signup_completed');
+              trackEvent('signup_stage', { stage: value });
+              trackEvent('signup_completed');
               showStep(4);
             }
           } else {
-            track('signup_error', { step: field, message: body.error || 'unknown' });
+            trackEvent('signup_error', { step: field, message: body.error || 'unknown' });
             setStatus(body.error || 'Something went wrong. Please try again.', 'error');
             grid.querySelectorAll<HTMLButtonElement>('.choice').forEach((b) => (b.disabled = false));
           }
         } catch {
-          track('signup_error', { step: field, message: 'network' });
+          trackEvent('signup_error', { step: field, message: 'network' });
           setStatus('Network error. Please try again.', 'error');
           grid.querySelectorAll<HTMLButtonElement>('.choice').forEach((b) => (b.disabled = false));
         }

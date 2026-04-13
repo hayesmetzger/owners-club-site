@@ -76,8 +76,19 @@ function fmt(value: string | null) {
       }
       h1 {
         font-size: 1.5rem;
-        margin: 0 0 1.5rem;
+        margin: 0 0 0.5rem;
       }
+      nav {
+        margin-bottom: 1.5rem;
+        font-size: 0.875rem;
+      }
+      nav a {
+        color: #9ca3af;
+        text-decoration: none;
+        margin-right: 1rem;
+      }
+      nav a:hover { color: #d4af37; }
+      nav a.active { color: #fff; font-weight: 600; }
       .stats {
         display: flex;
         gap: 1rem;
@@ -174,6 +185,10 @@ function fmt(value: string | null) {
   </head>
   <body>
     <h1>Signups</h1>
+    <nav>
+      <a href="/admin/signups" class="active">Signups</a>
+      <a href="/admin/analytics">Analytics</a>
+    </nav>
 
     {loadError && <div class="error">{loadError}</div>}
 
